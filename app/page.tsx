@@ -1,6 +1,10 @@
 import Image from "next/image";
+import CountdownTimer from "./components/CountdownTimer";
 
 export default function Home() {
+  // Fecha objetivo para el sorteo (aproximadamente un mes en el futuro)
+  const targetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       {/* Cabecera con logo */}
@@ -79,24 +83,7 @@ export default function Home() {
         {/* Contador */}
         <section className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-8 logo-text">TIEMPO RESTANTE PARA EL SORTEO</h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="card-gastromotor px-6 py-4 rounded-lg w-24">
-              <div className="text-4xl font-bold text-yellow-500">15</div>
-              <div className="text-orange-500">Días</div>
-            </div>
-            <div className="card-gastromotor px-6 py-4 rounded-lg w-24">
-              <div className="text-4xl font-bold text-yellow-500">08</div>
-              <div className="text-orange-500">Horas</div>
-            </div>
-            <div className="card-gastromotor px-6 py-4 rounded-lg w-24">
-              <div className="text-4xl font-bold text-yellow-500">45</div>
-              <div className="text-orange-500">Minutos</div>
-            </div>
-            <div className="card-gastromotor px-6 py-4 rounded-lg w-24">
-              <div className="text-4xl font-bold text-yellow-500">30</div>
-              <div className="text-orange-500">Segundos</div>
-            </div>
-          </div>
+          <CountdownTimer targetDate={targetDate} />
         </section>
         
         {/* Sección de información */}
