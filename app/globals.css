@@ -4,20 +4,22 @@
   --background: #000000;
   --foreground: #ffffff;
   --primary-red: #e50000;
+  --primary-darkred: #a30000;
   --primary-orange: #ff5e00;
   --secondary-orange: #ff8a00;
-  --gold: #ffc400;
-  --flame-gradient-start: #ff8a00;
-  --flame-gradient-end: #dd1818;
+  --electric-blue: #00cfff;
+  --white: #fff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary-red: var(--primary-red);
+  --color-primary-darkred: var(--primary-darkred);
   --color-primary-orange: var(--primary-orange);
   --color-secondary-orange: var(--secondary-orange);
-  --color-gold: var(--gold);
+  --color-electric-blue: var(--electric-blue);
+  --color-white: var(--white);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -36,38 +38,77 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(to right, var(--primary-orange), var(--primary-red));
+  background: linear-gradient(90deg, var(--primary-red) 0%, var(--primary-darkred) 100%);
   color: white;
-  transition: all 0.3s ease;
-  border: 1px solid var(--gold);
+  transition: all 0.3s cubic-bezier(.4,2,.3,1);
+  border: 2px solid var(--primary-red);
+  box-shadow: 0 4px 24px 0 rgba(229, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
 }
-
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  left: -75%;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, var(--primary-orange), transparent);
+  opacity: 0.15;
+  transform: skewX(-20deg);
+  transition: left 0.5s cubic-bezier(.4,2,.3,1);
+}
+.btn-primary:hover::after {
+  left: 120%;
+}
 .btn-primary:hover {
-  background: linear-gradient(to right, var(--primary-red), var(--primary-orange));
-  box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+  background: linear-gradient(90deg, var(--primary-darkred) 0%, var(--primary-red) 100%);
+  box-shadow: 0 8px 32px 0 rgba(229, 0, 0, 0.25), 0 0 0 4px var(--primary-orange);
+  transform: scale(1.04);
 }
 
 .logo-text {
-  background: linear-gradient(to right, var(--secondary-orange), var(--primary-red));
+  background: linear-gradient(to right, var(--primary-red), var(--primary-darkred));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .card-gastromotor {
-  background-color: rgba(20, 20, 20, 0.9);
+  background: linear-gradient(135deg, #181818 60%, #2d1a00 100%);
   border: 2px solid var(--primary-red);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(.4,2,.3,1);
+  box-shadow: 0 4px 16px 0 rgba(229, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
 }
-
 .card-gastromotor:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(255, 0, 0, 0.3);
-  border-color: var(--gold);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 32px 0 rgba(229, 0, 0, 0.18), 0 0 0 4px var(--primary-orange);
+  border-color: var(--primary-orange);
+}
+.card-gastromotor::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--primary-red) 0%, transparent 60%);
+  opacity: 0.07;
+  pointer-events: none;
 }
 
 .header-flame {
-  background: linear-gradient(to right, var(--flame-gradient-start), var(--flame-gradient-end));
+  background: linear-gradient(to right, var(--primary-red), var(--primary-darkred));
+}
+
+/* Animaciones de entrada */
+[data-aos] {
+  opacity: 0;
+  transition-property: opacity, transform;
+}
+[data-aos].aos-animate {
+  opacity: 1;
 }
