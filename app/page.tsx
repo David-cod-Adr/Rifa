@@ -27,7 +27,7 @@ export default function Home() {
           <div className="mb-6 drop-shadow-2xl" data-aos="zoom-in">
             <Image src="/WhatsApp_Image_2025-06-12_at_13.16.59_405f9a84-removebg-preview.png" alt="Gastromotor Sorteos" width={400} height={200} className="object-contain" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-extrabold logo-text text-center drop-shadow-lg mb-4" data-aos="fade-up">¡Gana el auto de tus sueños!</h1>
+          <h1 className="text-5xl md:text-6xl font-extrabold text-white text-center drop-shadow-xl mb-4 font-montserrat tracking-tight leading-tight" data-aos="fade-up" style={{textShadow: '0 4px 24px #000a'}}>¡Gana el auto de tus sueños!</h1>
           <p className="text-xl md:text-2xl text-white text-center mb-8 max-w-2xl" data-aos="fade-up" data-aos-delay="200">Participa en el sorteo de una Toyota Fortuner 4x4, una Yamaha MT03 y premios en efectivo. ¡No dejes pasar tu oportunidad!</p>
           <motion.a
             href="#premios"
