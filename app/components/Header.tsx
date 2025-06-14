@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Header({ logoSrc = "/logo-placeholder.png" }) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
   return (
-    <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-black/80 shadow-lg border-b-4 border-b-gradient-to-r from-red-700 via-red-500 to-red-700 animate-fade-in-down transition-all duration-500">
+    <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-black/80 shadow-lg animate-fade-in-down transition-all duration-500">
       <div className="container mx-auto flex items-center justify-between h-20 px-4">
         {/* Logo + Texto */}
         <div className="flex items-center space-x-4 min-w-0 h-full">
@@ -28,12 +30,23 @@ export default function Header({ logoSrc = "/logo-placeholder.png" }) {
                 <a
                   href={item.href}
                   className="relative text-white transition-colors duration-300 px-2 py-1 after:content-[''] after:block after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-red-500 after:to-red-700 after:transition-all after:duration-300 hover:after:w-full hover:text-red-400"
-                  style={{lineHeight: '48px'}}
-                >
+                  style={{lineHeight: '48px'}}>
                   {item.label}
                 </a>
               </li>
             ))}
+            {/* Botón de login */}
+            <li className="flex items-center h-full ml-4">
+              <button
+                onClick={() => router.push("/login")}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-white hover:bg-red-600 transition-colors shadow-md border border-red-700"
+                title="Iniciar sesión"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-black group-hover:text-white">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 1115 0v.75a.75.75 0 01-.75.75h-13.5a.75.75 0 01-.75-.75v-.75z" />
+                </svg>
+              </button>
+            </li>
           </ul>
         </nav>
         {/* Menú móvil */}
@@ -75,6 +88,18 @@ export default function Header({ logoSrc = "/logo-placeholder.png" }) {
                 </a>
               </li>
             ))}
+            {/* Botón de login móvil */}
+            <li className="flex items-center h-full mt-8">
+              <button
+                onClick={() => { setOpen(false); router.push("/login"); }}
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-white hover:bg-red-600 transition-colors shadow-md border border-red-700"
+                title="Iniciar sesión"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-black group-hover:text-white">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 1115 0v.75a.75.75 0 01-.75.75h-13.5a.75.75 0 01-.75-.75v-.75z" />
+                </svg>
+              </button>
+            </li>
           </ul>
         </nav>
         {/* Overlay para cerrar menú */}
@@ -85,21 +110,6 @@ export default function Header({ logoSrc = "/logo-placeholder.png" }) {
           />
         )}
       </div>
-      <style jsx global>{`
-        @keyframes fade-in-down {
-          from { opacity: 0; transform: translateY(-30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-down { animation: fade-in-down 0.7s cubic-bezier(.4,2,.3,1); }
-        .border-b-gradient-to-r {
-          border-image: linear-gradient(to right, #a30000, #e50000, #a30000) 1;
-        }
-        .logo-text-simple {
-          background: none !important;
-          color: #fff !important;
-          text-shadow: 1px 1px 4px #000a;
-        }
-      `}</style>
     </header>
   );
-} 
+}

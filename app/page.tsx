@@ -4,10 +4,26 @@ import CountdownTimer from "./components/CountdownTimer";
 import Header from "./components/Header";
 import { motion } from "framer-motion";
 import AOSInitializer from "./components/AOSInitializer";
+import PremiosCarousel from "./components/PremiosCarousel";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   // Fecha objetivo para el sorteo (aproximadamente un mes en el futuro)
   const targetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  const [sold, setSold] = useState(0);
+  const [total, setTotal] = useState(1000);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const s = localStorage.getItem("ticketsSold");
+      setSold(s ? Number(s) : 0);
+      const t = localStorage.getItem("totalTickets");
+      setTotal(t ? Number(t) : 1000);
+    }
+  }, []);
+
+  const percent = total > 0 ? Math.min(100, (sold / total) * 100) : 0;
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
@@ -37,98 +53,72 @@ export default function Home() {
             data-aos="zoom-in"
             data-aos-delay="400"
           >
-            Ver Premios
+            Ver Sorteo Actual
           </motion.a>
         </motion.div>
       </section>
 
       {/* Premios Destacados */}
       <section id="premios" className="container mx-auto py-16 px-4" data-aos="fade-up">
-        <h2 className="text-4xl font-extrabold text-center logo-text mb-12" data-aos="fade-up">Premios Destacados</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Premio 1 */}
-          <motion.div
-            className="card-gastromotor p-6 rounded-xl flex flex-col items-center"
-            whileHover={{ scale: 1.04, boxShadow: "0 0 32px 0 #ffc40055" }}
-            data-aos="zoom-in"
-          >
-            <div className="w-full flex justify-center mb-4">
-              <Image src="/premio-auto.png" alt="Toyota Fortuner" width={220} height={120} className="rounded-lg shadow-lg object-contain bg-black" />
-            </div>
-            <h3 className="text-2xl font-bold text-red-500 mb-2">Toyota Fortuner 4x4</h3>
-            <span className="inline-block bg-gradient-to-r from-red-600 to-red-800 text-white font-bold px-3 py-1 rounded-full mb-2 text-sm">Gran Premio</span>
-            <p className="text-center text-gray-200">Vehículo 0 km, completamente equipado y listo para ti.</p>
-          </motion.div>
-          {/* Premio 2 */}
-          <motion.div
-            className="card-gastromotor p-6 rounded-xl flex flex-col items-center"
-            whileHover={{ scale: 1.04, boxShadow: "0 0 32px 0 #ffc40055" }}
-            data-aos="zoom-in"
-            data-aos-delay="100"
-          >
-            <div className="w-full flex justify-center mb-4">
-              <Image src="/premio-moto.png" alt="Yamaha MT03" width={220} height={120} className="rounded-lg shadow-lg object-contain bg-black" />
-            </div>
-            <h3 className="text-2xl font-bold text-red-500 mb-2">Yamaha MT03</h3>
-            <span className="inline-block bg-gradient-to-r from-red-600 to-red-800 text-white font-bold px-3 py-1 rounded-full mb-2 text-sm">Segundo Premio</span>
-            <p className="text-center text-gray-200">Motocicleta 0 km, última generación, lista para la aventura.</p>
-          </motion.div>
-          {/* Premio 3 */}
-          <motion.div
-            className="card-gastromotor p-6 rounded-xl flex flex-col items-center"
-            whileHover={{ scale: 1.04, boxShadow: "0 0 32px 0 #ffc40055" }}
-            data-aos="zoom-in"
-            data-aos-delay="200"
-          >
-            <div className="w-full flex justify-center mb-4">
-              <Image src="/premio-efectivo.png" alt="Premios en efectivo" width={220} height={120} className="rounded-lg shadow-lg object-contain bg-black" />
-            </div>
-            <h3 className="text-2xl font-bold text-red-500 mb-2">Premios en Efectivo</h3>
-            <span className="inline-block bg-gradient-to-r from-red-600 to-red-800 text-white font-bold px-3 py-1 rounded-full mb-2 text-sm">Adicionales</span>
-            <p className="text-center text-gray-200">Varios premios en efectivo para los afortunados ganadores.</p>
-          </motion.div>
-        </div>
+        <h2 className="text-4xl font-extrabold text-center text-white mb-12 font-montserrat" data-aos="fade-up">Premios Destacados</h2>
+        <PremiosCarousel />
       </section>
 
-      {/* Contador de Sorteo */}
+      {/* Barra de progreso de boletas vendidas */}
       <section className="container mx-auto py-12 px-4 text-center" data-aos="fade-up">
-        <h2 className="text-3xl font-bold mb-8 logo-text">Tiempo restante para el sorteo</h2>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }}>
-          <CountdownTimer targetDate={targetDate} />
-        </motion.div>
-        <p className="mt-6 text-lg text-white animate-pulse">¡No pierdas tu oportunidad de ganar!</p>
+        <h2 className="text-3xl font-extrabold text-center mb-4 font-montserrat">¡CANTIDADES LIMITADAS!</h2>
+        <div className="w-full max-w-4xl mx-auto">
+          <div className="relative w-full bg-gray-200 rounded-xl overflow-hidden h-10 mb-2 shadow-lg">
+            {/* Barra llena con gradiente animado y borde rojo */}
+            <div
+              className="absolute left-0 top-0 h-full rounded-xl border-2 border-red-600 shadow-lg transition-all duration-1000 ease-in-out"
+              style={{
+                width: `${percent}%`,
+                background: 'linear-gradient(90deg, #e50000 0%, #a30000 60%, #181818 100%)',
+                boxShadow: '0 4px 24px 0 rgba(229,0,0,0.18)'
+              }}
+            ></div>
+            {/* Texto centrado */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <span className="text-white font-bold text-lg drop-shadow-lg">
+                Números Vendidos: {sold} de {total} ({percent.toFixed(2)}%)
+              </span>
+            </div>
+          </div>
+          <p className="text-center text-gray-300 mt-2 max-w-2xl mx-auto">El auto y las motos se jugarán una vez vendida la totalidad de los números, es decir, cuando la barra de progreso llegue al 100%. Se hará tomando los 5 números de la primera, segunda y tercera suerte de la suertuda (programa de la lot nacional).</p>
+        </div>
       </section>
 
       {/* Cómo Participar */}
       <section id="como-participar" className="container mx-auto py-16 px-4" data-aos="fade-up">
-        <h2 className="text-3xl font-bold text-center mb-10 text-red-500">¿Cómo participar?</h2>
+        <h2 className="text-3xl font-bold text-center mb-10 text-white font-montserrat">¿Cómo participar?</h2>
         <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           {/* Paso 1 */}
           <motion.div className="flex flex-col items-center bg-black bg-opacity-80 p-6 rounded-xl border-2 border-red-600 w-full md:w-1/3" whileHover={{ scale: 1.05, boxShadow: "0 0 24px 0 #ff8a00aa" }} data-aos="fade-up">
-            <div className="bg-gradient-to-r from-red-600 to-red-800 rounded-full w-16 h-16 flex items-center justify-center mb-4 shadow-lg">
-              <span className="text-2xl font-bold text-white">1</span>
+            <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mb-4 shadow-lg">
+              <span className="text-2xl font-bold text-black">1</span>
             </div>
-            <h3 className="text-xl font-bold mb-2 text-red-400">Selecciona tu número</h3>
+            <h3 className="text-xl font-bold mb-2 text-white">Selecciona tu número</h3>
             <p className="text-white text-center">Escoge tu número de la suerte entre los disponibles.</p>
           </motion.div>
           {/* Flecha */}
-          <div className="hidden md:block text-5xl text-red-600">→</div>
+          <div className="hidden md:block text-5xl text-white">→</div>
           {/* Paso 2 */}
           <motion.div className="flex flex-col items-center bg-black bg-opacity-80 p-6 rounded-xl border-2 border-red-600 w-full md:w-1/3" whileHover={{ scale: 1.05, boxShadow: "0 0 24px 0 #ff8a00aa" }} data-aos="fade-up" data-aos-delay="100">
-            <div className="bg-gradient-to-r from-red-600 to-red-800 rounded-full w-16 h-16 flex items-center justify-center mb-4 shadow-lg">
-              <span className="text-2xl font-bold text-white">2</span>
+            <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mb-4 shadow-lg">
+              <span className="text-2xl font-bold text-black">2</span>
             </div>
-            <h3 className="text-xl font-bold mb-2 text-red-400">Realiza el pago</h3>
+            <h3 className="text-xl font-bold mb-2 text-white">Realiza el pago</h3>
             <p className="text-white text-center">Paga de forma segura mediante nuestras opciones disponibles.</p>
           </motion.div>
           {/* Flecha */}
-          <div className="hidden md:block text-5xl text-red-600">→</div>
+          <div className="hidden md:block text-5xl text-white">→</div>
           {/* Paso 3 */}
           <motion.div className="flex flex-col items-center bg-black bg-opacity-80 p-6 rounded-xl border-2 border-red-600 w-full md:w-1/3" whileHover={{ scale: 1.05, boxShadow: "0 0 24px 0 #ff8a00aa" }} data-aos="fade-up" data-aos-delay="200">
-            <div className="bg-gradient-to-r from-red-600 to-red-800 rounded-full w-16 h-16 flex items-center justify-center mb-4 shadow-lg">
-              <span className="text-2xl font-bold text-white">3</span>
+            <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mb-4 shadow-lg">
+              <span className="text-2xl font-bold text-black">3</span>
             </div>
-            <h3 className="text-xl font-bold mb-2 text-red-400">Espera el sorteo</h3>
+            <h3 className="text-xl font-bold mb-2 text-white">Espera el sorteo</h3>
             <p className="text-white text-center">Sigue el sorteo en vivo y comprueba si eres el ganador.</p>
           </motion.div>
         </div>

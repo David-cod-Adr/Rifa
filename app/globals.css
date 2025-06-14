@@ -120,3 +120,11 @@ h1, h2, h3, h4, h5, h6 {
 [data-aos].aos-animate {
   opacity: 1;
 }
+
+@keyframes barberpole {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 0; }
+}
+.animate-barberpole {
+  animation: barberpole 1s linear infinite;
+}
